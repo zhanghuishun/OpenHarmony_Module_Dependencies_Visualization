@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenHarmony模块依赖关系可视化</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #searchInput {
+            padding: 12px 45px 12px 20px;
+            border: 2px solid #ACC6FF;
+            border-radius: 25px;
+            background: white;
+            color: #333;
+            font-size: 16px;
+            width: 300px;
+            box-shadow: 0 4px 15px rgba(172, 198, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #searchInput::placeholder {
+            color: #999;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #8DB4FF;
+            box-shadow: 0 6px 20px rgba(172, 198, 255, 0.4);
+        }
+
+        .clear-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #999;
+        }
+
+        .clear-btn:hover {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .help-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            background: white;
+            border: 2px solid #ACC6FF;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(172, 198, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .help-btn:hover {
+            background: #ACC6FF;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(172, 198, 255, 0.4);
+        }
+
+        .help-panel {
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            z-index: 101;
+            background: white;
+            border: 2px solid #ACC6FF;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(172, 198, 255, 0.4);
+            width: 280px;
+            display: none;
+        }
+
+        .help-panel.show {
+            display: block;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .help-section {
+            margin-bottom: 15px;
+        }
+
+        .help-section h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            color: #5a6c7d;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 12px;
+            border-radius: 6px;
+        }
+
+        .help-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        #visualization {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e9ecef;
+            margin-top: 60px;
+        }
+
+        .subsystem-arc {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .module-arc {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dependency-line {
+            fill: none;
+            stroke: #8DB4FF;
+            stroke-width: 1.5;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .highlighted {
+            stroke: #5a6c7d;
+            stroke-width: 3;
+            opacity: 1;
+        }
+
+        .dimmed {
+            opacity: 0.15;
+        }
+
+        .subsystem-label, .module-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-anchor: middle;
+            pointer-events: none;
+            fill: #5a6c7d;
+        }
+
+        .module-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 10px 15px;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e9ecef;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            #searchInput {
+                width: 200px;
+                font-size: 14px;
+            }
+            
+            .search-container {
+                position: relative;
+                margin-bottom: 20px;
+            }
+            
+            .help-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-left: 20px;
+            }
+            
+            .help-panel {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            #visualization {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索模块或子系统...">
+                <button class="clear-btn" onclick="clearSearch()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <button class="help-btn" onclick="toggleHelp()">操作说明</button>
+        
+        <div class="help-panel" id="helpPanel">
+            <div class="help-section">
+                <h3>图例说明</h3>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ACC6FF;"></div>
+                    <span>子系统</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #D7E2FB;"></div>
+                    <span>模块</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #8DB4FF;"></div>
+                    <span>依赖关系</span>
+                </div>
+            </div>
+            
+            <div class="help-section">
+                <h3>操作说明</h3>
+                <div class="help-text">
+                    • 外圈：子系统<br>
+                    • 内圈：模块<br>
+                    • 曲线：依赖关系<br>
+                    • 搜索框：查找并高亮模块<br>
+                    • 鼠标悬停：查看详细信息
+                </div>
+            </div>
+        </div>
+
+        <div id="visualization"></div>
+    </div>
+
+    <script>
+        // OpenHarmony 模块数据结构
+        fetch('subsystems.json')
+            .then(response => response.json())
+            .then(subsystems => {
+                const data = {
+                    subsystems: subsystems
+                };
+
+                // 原有的依赖关系定义
+                const dependencies = [
+                    { source: "arkui", target: "window_mgmt" },
+                    { source: "arkui", target: "input_mgmt" },
+                    { source: "arkts", target: "memory_mgmt" },
+                    { source: "arkts", target: "process_mgmt" },
+                    { source: "window_mgmt", target: "display_hal" },
+                    { source: "multimedia", target: "audio_hal" },
+                    { source: "multimedia", target: "display_hal" },
+                    { source: "camera_app", target: "camera_hal" },
+                    { source: "camera_app", target: "multimedia" },
+                    { source: "launcher", target: "arkui" },
+                    { source: "settings", target: "arkui" },
+                    { source: "gallery", target: "multimedia" },
+                    { source: "contacts", target: "distributed_data" },
+                    { source: "distributed_data", target: "communication" },
+                    { source: "rpc", target: "network_stack" },
+                    { source: "security", target: "kernel_driver" },
+                    { source: "power_mgmt", target: "kernel_driver" },
+                    { source: "input_mgmt", target: "sensor_hal" },
+                    { source: "bundle_mgmt", target: "filesystem" },
+                    { source: "dfx", target: "process_mgmt" }
+                ];
+
+                // 后续可视化代码保持不变
+                initVisualization(data, dependencies);
+            })
+            .catch(error => console.error('加载子系统数据时出错:', error));
+
+        function initVisualization(data, dependencies) {
+            const width = 800;
+            const height = 800;
+            const radius = Math.min(width, height) / 2 - 40;
+
+            const svg = d3.select("#visualization")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const g = svg.append("g")
+                .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+            // 创建提示框
+            const tooltip = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
+            // 计算角度分配，子系统间留间距
+            let totalModules = 0;
+            data.subsystems.forEach(subsystem => {
+                totalModules += subsystem.modules.length;
+            });
+
+            const subsystemGap = 0.05; // 子系统间隙角度
+            const totalGap = subsystemGap * data.subsystems.length;
+            const availableAngle = 2 * Math.PI - totalGap;
+            const anglePerModule = availableAngle / totalModules;
+
+            // 为每个模块分配位置
+            const modulePositions = {};
+            const subsystemArcs = [];
+            let currentAngle = 0;
+
+            data.subsystems.forEach((subsystem, subsystemIndex) => {
+                const startAngle = currentAngle;
+                const moduleCount = subsystem.modules.length;
+                const moduleGap = 0.01; // 模块间隙角度
+                const subsystemTotalGap = moduleGap * (moduleCount - 1);
+                const subsystemAvailableAngle = moduleCount * anglePerModule - subsystemTotalGap;
+                const anglePerModuleInSubsystem = subsystemAvailableAngle / moduleCount;
+                
+                subsystem.modules.forEach((module, index) => {
+                    const moduleStartInSubsystem = index * (anglePerModuleInSubsystem + moduleGap);
+                    const angle = currentAngle + moduleStartInSubsystem + anglePerModuleInSubsystem / 2;
+                    modulePositions[module.id] = {
+                        angle: angle,
+                        subsystem: subsystem.name,
+                        name: module.name,
+                        moduleStartAngle: currentAngle + moduleStartInSubsystem,
+                        moduleEndAngle: currentAngle + moduleStartInSubsystem + anglePerModuleInSubsystem
+                    };
+                });
+                
+                const endAngle = currentAngle + moduleCount * anglePerModule - subsystemTotalGap;
+                subsystemArcs.push({
+                    name: subsystem.name,
+                    startAngle: startAngle,
+                    endAngle: endAngle,
+                    modules: subsystem.modules
+                });
+                
+                currentAngle = endAngle + subsystemGap;
+            });
+
+            // 绘制子系统弧形
+            const arcGenerator = d3.arc()
+                .innerRadius(radius - 40)
+                .outerRadius(radius - 10);
+
+            const subsystemArcsGroup = g.append("g").attr("class", "subsystem-arcs");
+            
+            subsystemArcsGroup.selectAll(".subsystem-arc")
+                .data(subsystemArcs)
+                .enter()
+                .append("path")
+                .attr("class", "subsystem-arc")
+                .attr("d", d => arcGenerator({
+                    startAngle: d.startAngle,
+                    endAngle: d.endAngle
+                }))
+                .attr("fill", "#ACC6FF")
+                .attr("stroke", "none")
+                .on("mouseover", function(event, d) {
+                    d3.select(this).attr("fill", "#8DB4FF");
+                    tooltip.transition().duration(200).style("opacity", .9);
+                    tooltip.html(`子系统: ${d.name}<br>模块数量: ${d.modules.length}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    d3.select(this).attr("fill", "#ACC6FF");
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });
+
+            // 绘制模块弧形
+            const moduleArcGenerator = d3.arc()
+                .innerRadius(radius - 70)
+                .outerRadius(radius - 50);
+
+            const moduleArcsGroup = g.append("g").attr("class", "module-arcs");
+
+            Object.entries(modulePositions).forEach(([id, pos]) => {
+                moduleArcsGroup.append("path")
+                    .attr("class", "module-arc")
+                    .attr("id", `module-${id}`)
+                    .attr("d", moduleArcGenerator({
+                        startAngle: pos.moduleStartAngle,
+                        endAngle: pos.moduleEndAngle
+                    }))
+                    .attr("fill", "#D7E2FB")
+                    .attr("stroke", "none")
+                    .on("mouseover", function(event) {
+                        d3.select(this).attr("fill", "#C1D4F7");
+                        tooltip.transition().duration(200).style("opacity", .9);
+                        tooltip.html(`模块: ${pos.name}<br>子系统: ${pos.subsystem}`)
+                            .style("left", (event.pageX + 10) + "px")
+                            .style("top", (event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function() {
+                        d3.select(this).attr("fill", "#D7E2FB");
+                        tooltip.transition().duration(500).style("opacity", 0);
+                    });
+            });
+
+            // 绘制标签
+            const labelsGroup = g.append("g").attr("class", "labels");
+
+            // 子系统标签
+            subsystemArcs.forEach(arc => {
+                const midAngle = (arc.startAngle + arc.endAngle) / 2;
+                const labelRadius = radius - 25;
+                const x = Math.cos(midAngle - Math.PI / 2) * labelRadius;
+                const y = Math.sin(midAngle - Math.PI / 2) * labelRadius;
+                
+                labelsGroup.append("text")
+                    .attr("class", "subsystem-label")
+                    .attr("x", x)
+                    .attr("y", y)
+                    .attr("dy", "0.35em")
+                    .text(arc.name);
+            });
+
+            // 模块标签
+            Object.entries(modulePositions).forEach(([id, pos]) => {
+                const labelRadius = radius - 60;
+                const x = Math.cos(pos.angle - Math.PI / 2) * labelRadius;
+                const y = Math.sin(pos.angle - Math.PI / 2) * labelRadius;
+                
+                labelsGroup.append("text")
+                    .attr("class", "module-label")
+                    .attr("id", `label-${id}`)
+                    .attr("x", x)
+                    .attr("y", y)
+                    .attr("dy", "0.35em")
+                    .text(pos.name);
+            });
+
+            // 绘制依赖关系线
+            const line = d3.radialLine()
+                .curve(d3.curveBundle.beta(0.85))
+                .radius(d => d.r)
+                .angle(d => d.angle);
+
+            const dependencyGroup = g.append("g").attr("class", "dependencies");
+
+            dependencies.forEach((dep, index) => {
+                const sourcePos = modulePositions[dep.source];
+                const targetPos = modulePositions[dep.target];
+                
+                if (sourcePos && targetPos) {
+                    const points = [
+                        { angle: sourcePos.angle, r: radius - 60 },
+                        { angle: sourcePos.angle, r: radius / 3 },
+                        { angle: targetPos.angle, r: radius / 3 },
+                        { angle: targetPos.angle, r: radius - 60 }
+                    ];
+                    
+                    dependencyGroup.append("path")
+                        .attr("class", "dependency-line")
+                        .attr("id", `dep-${dep.source}-${dep.target}`)
+                        .attr("d", line(points))
+                        .attr("stroke", "#8DB4FF")
+                        .attr("stroke-width", 1.5)
+                        .attr("fill", "none")
+                        .style("opacity", 0.6);
+                }
+            });
+
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                clearHighlight();
+                
+                if (searchTerm) {
+                    searchAndHighlight(searchTerm);
+                }
+            });
+
+            function searchAndHighlight(searchTerm) {
+                let found = false;
+                let highlightedDeps = new Set();
+                
+                // 搜索模块
+                Object.entries(modulePositions).forEach(([id, pos]) => {
+                    if (pos.name.toLowerCase().includes(searchTerm) || 
+                        pos.subsystem.toLowerCase().includes(searchTerm)) {
+                        highlightModule(id, highlightedDeps);
+                        found = true;
+                    }
+                });
+                
+                if (!found) {
+                    // 搜索子系统
+                    subsystemArcs.forEach(arc => {
+                        if (arc.name.toLowerCase().includes(searchTerm)) {
+                            arc.modules.forEach(module => {
+                                highlightModule(module.id, highlightedDeps);
+                            });
+                        }
+                    });
+                }
+                
+                // 模糊其他依赖关系线
+                d3.selectAll(".dependency-line").each(function() {
+                    const id = d3.select(this).attr("id");
+                    if (!highlightedDeps.has(id)) {
+                        d3.select(this).classed("dimmed", true);
+                    }
+                });
+            }
+
+            function highlightModule(moduleId, highlightedDeps) {
+                // 高亮模块
+                d3.select(`#module-${moduleId}`)
+                    .attr("fill", "#8DB4FF");
+                
+                d3.select(`#label-${moduleId}`)
+                    .style("fill", "#2c3e50")
+                    .style("font-weight", "bold");
+                
+                // 高亮相关依赖关系
+                dependencies.forEach(dep => {
+                    if (dep.source === moduleId || dep.target === moduleId) {
+                        const depId = `dep-${dep.source}-${dep.target}`;
+                        highlightedDeps.add(depId);
+                        d3.select(`#${depId}`)
+                            .classed("highlighted", true);
+                        
+                        // 高亮相关模块
+                        const relatedId = dep.source === moduleId ? dep.target : dep.source;
+                        d3.select(`#module-${relatedId}`)
+                            .attr("fill", "#B8CDFA");
+                    }
+                });
+            }
+
+            function clearHighlight() {
+                d3.selectAll(".module-arc")
+                    .attr("fill", "#D7E2FB");
+                
+                d3.selectAll(".module-label")
+                    .style("fill", "#5a6c7d")
+                    .style("font-weight", "500");
+                
+                d3.selectAll(".dependency-line")
+                    .classed("highlighted", false)
+                    .classed("dimmed", false);
+            }
+
+            function clearSearch() {
+                searchInput.value = '';
+                clearHighlight();
+            }
+
+            function toggleHelp() {
+                const helpPanel = document.getElementById('helpPanel');
+                helpPanel.classList.toggle('show');
+            }
+
+            // 点击其他地方关闭帮助面板
+            document.addEventListener('click', function(event) {
+                const helpBtn = event.target.closest('.help-btn');
+                const helpPanel = document.getElementById('helpPanel');
+                
+                if (!helpBtn && !helpPanel.contains(event.target)) {
+                    helpPanel.classList.remove('show');
+                }
+            });
+
+            // 响应式调整
+            function resize() {
+                const container = document.getElementById('visualization');
+                const containerWidth = container.clientWidth;
+                const newWidth = Math.min(containerWidth, 800);
+                const newHeight = newWidth;
+                
+                svg.attr("width", newWidth).attr("height", newHeight);
+                g.attr("transform", `translate(${newWidth / 2}, ${newHeight / 2})`);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+        </script>
+</body>
+</html>

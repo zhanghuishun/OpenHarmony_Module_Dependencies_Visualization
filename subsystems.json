@@ -1,0 +1,558 @@
+[
+    {
+      "path": "foundation/arkui",
+      "name_en": "arkui",
+      "name_ch": "方舟UI",
+      "modules": [
+        { "name": "声明式UI框架", "id": "declarative_ui_framework" },
+        { "name": "渲染引擎", "id": "rendering_engine" },
+        { "name": "动画系统", "id": "animation_system" }
+      ]
+    },
+    {
+      "path": "foundation/ai",
+      "name_en": "ai",
+      "name_ch": "人工智能",
+      "modules": [
+        { "name": "机器学习框架", "id": "ml_framework" },
+        { "name": "计算机视觉", "id": "computer_vision" },
+        { "name": "自然语言处理", "id": "nlp" }
+      ]
+    },
+    {
+      "path": "base/account",
+      "name_en": "account",
+      "name_ch": "帐号",
+      "modules": [
+        { "name": "用户账户管理", "id": "user_account_mgmt" },
+        { "name": "设备账户管理", "id": "device_account_mgmt" },
+        { "name": "账户同步服务", "id": "account_sync_service" }
+      ]
+    },
+    {
+      "path": "foundation/distributeddatamgr",
+      "name_en": "distributeddatamgr",
+      "name_ch": "分布式数据管理",
+      "modules": [
+        { "name": "数据同步引擎", "id": "data_sync_engine" },
+        { "name": "数据存储服务", "id": "data_storage_service" },
+        { "name": "数据加密模块", "id": "data_encryption_module" }
+      ]
+    },
+    {
+      "path": "base/security",
+      "name_en": "security",
+      "name_ch": "安全",
+      "modules": [
+        { "name": "身份认证服务", "id": "identity_auth_service" },
+        { "name": "访问控制模块", "id": "access_control_module" },
+        { "name": "安全审计系统", "id": "security_audit_system" }
+      ]
+    },
+    {
+      "path": "base/useriam",
+      "name_en": "useriam",
+      "name_ch": "用户身份验证与授权管理",
+      "modules": [
+        { "name": "用户认证服务", "id": "user_auth_service" },
+        { "name": "授权管理模块", "id": "authorization_mgmt_module" },
+        { "name": "凭证管理系统", "id": "credential_mgmt_system" }
+      ]
+    },
+    {
+      "path": "base/accesscontrol",
+      "name_en": "accesscontrol",
+      "name_ch": "访问控制",
+      "modules": [
+        { "name": "权限管理服务", "id": "permission_mgmt_service" },
+        { "name": "策略引擎", "id": "policy_engine" },
+        { "name": "审计日志模块", "id": "audit_log_module" }
+      ]
+    },
+    {
+      "path": "base/startup",
+      "name_en": "startup",
+      "name_ch": "启动管理",
+      "modules": [
+        { "name": "启动引导程序", "id": "boot_loader" },
+        { "name": "系统初始化服务", "id": "system_init_service" },
+        { "name": "服务管理模块", "id": "service_mgmt_module" }
+      ]
+    },
+    {
+      "path": "base/hiviewdfx",
+      "name_en": "hiviewdfx",
+      "name_ch": "健康视图与故障诊断框架",
+      "modules": [
+        { "name": "健康监测服务", "id": "health_monitoring_service" },
+        { "name": "故障诊断引擎", "id": "fault_diagnosis_engine" },
+        { "name": "日志管理系统", "id": "log_mgmt_system" }
+      ]
+    },
+    {
+      "path": "utils",
+      "name_en": "utils",
+      "name_ch": "工具库",
+      "modules": [
+        { "name": "通用工具集", "id": "common_utils_set" },
+        { "name": "数学计算库", "id": "math_library" },
+        { "name": "字符串处理模块", "id": "string_processing_module" }
+      ]
+    },
+    {
+      "path": "commonlibrary",
+      "name_en": "commonlibrary",
+      "name_ch": "公共库",
+      "modules": [
+        { "name": "基础库", "id": "basic_library" },
+        { "name": "网络库", "id": "network_library" },
+        { "name": "数据库访问模块", "id": "database_access_module" }
+      ]
+    },
+    {
+      "path": "foundation/bundlemanager",
+      "name_en": "bundlemanager",
+      "name_ch": "包管理",
+      "modules": [
+        { "name": "包安装服务", "id": "package_install_service" },
+        { "name": "包更新模块", "id": "package_update_module" },
+        { "name": "包卸载服务", "id": "package_uninstall_service" }
+      ]
+    },
+    {
+      "path": "foundation/appexecfwk",
+      "name_en": "appexecfwk",
+      "name_ch": "应用执行框架",
+      "modules": [
+        { "name": "应用生命周期管理", "id": "app_lifecycle_mgmt" },
+        { "name": "应用沙箱环境", "id": "app_sandbox_env" },
+        { "name": "应用资源管理", "id": "app_resource_mgmt" }
+      ]
+    },
+    {
+      "path": "foundation/ability",
+      "name_en": "ability",
+      "name_ch": "能力模块",
+      "modules": [
+        { "name": "服务能力框架", "id": "service_ability_framework" },
+        { "name": "UI能力框架", "id": "ui_ability_framework" },
+        { "name": "能力调度引擎", "id": "ability_scheduling_engine" }
+      ]
+    },
+    {
+      "path": "base/notification",
+      "name_en": "notification",
+      "name_ch": "通知管理",
+      "modules": [
+        { "name": "通知分发服务", "id": "notification_distribution_service" },
+        { "name": "通知存储模块", "id": "notification_storage_module" },
+        { "name": "通知设置管理", "id": "notification_settings_mgmt" }
+      ]
+    },
+    {
+      "path": "foundation/communication",
+      "name_en": "communication",
+      "name_ch": "通信服务",
+      "modules": [
+        { "name": "网络通信框架", "id": "network_communication_framework" },
+        { "name": "蓝牙服务模块", "id": "bluetooth_service_module" },
+        { "name": "Wi-Fi管理模块", "id": "wifi_mgmt_module" }
+      ]
+    },
+    {
+      "path": "base/location",
+      "name_en": "location",
+      "name_ch": "定位服务",
+      "modules": [
+        { "name": "GPS定位模块", "id": "gps_location_module" },
+        { "name": "基站定位服务", "id": "cell_location_service" },
+        { "name": "位置信息融合", "id": "location_fusion" }
+      ]
+    },
+    {
+      "path": "foundation/systemabilitymgr",
+      "name_en": "systemabilitymgr",
+      "name_ch": "系统能力管理",
+      "modules": [
+        { "name": "能力注册服务", "id": "ability_registration_service" },
+        { "name": "能力发现模块", "id": "ability_discovery_module" },
+        { "name": "能力调用管理", "id": "ability_invocation_mgmt" }
+      ]
+    },
+    {
+      "path": "drivers",
+      "name_en": "hdf",
+      "name_ch": "硬件驱动框架",
+      "modules": [
+        { "name": "通用驱动框架", "id": "common_driver_framework" },
+        { "name": "设备适配层", "id": "device_adaptation_layer" },
+        { "name": "驱动管理服务", "id": "driver_mgmt_service" }
+      ]
+    },
+    {
+      "path": "base/update",
+      "name_en": "updater",
+      "name_ch": "更新管理",
+      "modules": [
+        { "name": "更新包下载服务", "id": "update_package_download_service" },
+        { "name": "更新验证模块", "id": "update_verification_module" },
+        { "name": "更新执行引擎", "id": "update_execution_engine" }
+      ]
+    },
+    {
+      "path": "developtools",
+      "name_en": "developtools",
+      "name_ch": "开发工具",
+      "modules": [
+        { "name": "IDE集成开发环境", "id": "ide_environment" },
+        { "name": "调试工具集", "id": "debugging_toolset" },
+        { "name": "性能分析工具", "id": "performance_analysis_tool" }
+      ]
+    },
+     {
+      "path": "base/sensors",
+      "name_en": "sensors",
+      "name_ch": "传感器管理",
+      "modules": [
+        { "name": "传感器驱动框架", "id": "sensor_driver_framework" },
+        { "name": "传感器数据处理", "id": "sensor_data_processing" },
+        { "name": "传感器服务管理", "id": "sensor_service_mgmt" }
+      ]
+    },
+    {
+      "path": "foundation/graphic",
+      "name_en": "graphic",
+      "name_ch": "图形处理",
+      "modules": [
+        { "name": "2D图形引擎", "id": "2d_graphic_engine" },
+        { "name": "3D图形渲染", "id": "3d_graphic_rendering" },
+        { "name": "图形加速模块", "id": "graphic_acceleration_module" }
+      ]
+    },
+    {
+      "path": "foundation/window",
+      "name_en": "window",
+      "name_ch": "窗口管理",
+      "modules": [
+        { "name": "窗口布局管理", "id": "window_layout_mgmt" },
+        { "name": "窗口渲染服务", "id": "window_rendering_service" },
+        { "name": "窗口输入处理", "id": "window_input_processing" }
+      ]
+    },
+    {
+      "path": "base/time",
+      "name_en": "time",
+      "name_ch": "时间管理",
+      "modules": [
+        { "name": "系统时钟服务", "id": "system_clock_service" },
+        { "name": "时间同步模块", "id": "time_sync_module" },
+        { "name": "定时器管理", "id": "timer_mgmt" }
+      ]
+    },
+    {
+      "path": "base/inputmethod",
+      "name_en": "inputmethod",
+      "name_ch": "输入法管理",
+      "modules": [
+        { "name": "输入法引擎", "id": "input_method_engine" },
+        { "name": "词库管理模块", "id": "lexicon_mgmt_module" },
+        { "name": "输入预测服务", "id": "input_prediction_service" }
+      ]
+    },
+    {
+      "path": "base/request",
+      "name_en": "request",
+      "name_ch": "请求管理",
+      "modules": [
+        { "name": "网络请求服务", "id": "network_request_service" },
+        { "name": "请求队列管理", "id": "request_queue_mgmt" },
+        { "name": "请求缓存模块", "id": "request_cache_module" }
+      ]
+    },
+    {
+      "path": "base/print",
+      "name_en": "print",
+      "name_ch": "打印管理",
+      "modules": [
+        { "name": "打印服务框架", "id": "print_service_framework" },
+        { "name": "打印机驱动适配", "id": "printer_driver_adaptation" },
+        { "name": "打印任务管理", "id": "print_task_mgmt" }
+      ]
+    },
+    {
+      "path": "base/theme",
+      "name_en": "theme",
+      "name_ch": "主题管理",
+      "modules": [
+        { "name": "主题资源管理", "id": "theme_resource_mgmt" },
+        { "name": "主题切换服务", "id": "theme_switching_service" },
+        { "name": "图标管理模块", "id": "icon_mgmt_module" }
+      ]
+    },
+    {
+      "path": "foundation/multimedia",
+      "name_en": "multimedia",
+      "name_ch": "多媒体服务",
+      "modules": [
+        { "name": "音频播放服务", "id": "audio_playback_service" },
+        { "name": "视频解码模块", "id": "video_decoding_module" },
+        { "name": "摄像头管理", "id": "camera_mgmt" }
+      ]
+    },
+    {
+      "path": "foundation/CastEngine",
+      "name_en": "castplus",
+      "name_ch": "增强投屏引擎",
+      "modules": [
+        { "name": "投屏协议栈", "id": "cast_protocol_stack" },
+        { "name": "屏幕镜像服务", "id": "screen_mirroring_service" },
+        { "name": "设备发现模块", "id": "device_discovery_module" }
+      ]
+    },
+    {
+      "path": "foundation/multimodalinput",
+      "name_en": "multimodalinput",
+      "name_ch": "多模态输入",
+      "modules": [
+        { "name": "语音识别模块", "id": "speech_recognition_module" },
+        { "name": "手势识别服务", "id": "gesture_recognition_service" },
+        { "name": "面部识别引擎", "id": "face_recognition_engine" }
+      ]
+    },
+    {
+      "path": "base/telephony",
+      "name_en": "telephony",
+      "name_ch": "电话服务",
+      "modules": [
+        { "name": "电话呼叫管理", "id": "call_mgmt" },
+        { "name": "短信服务模块", "id": "sms_service_module" },
+        { "name": "SIM卡管理", "id": "sim_card_mgmt" }
+      ]
+    },
+    {
+      "path": "base/global",
+      "name_en": "global",
+      "name_ch": "全球化服务",
+      "modules": [
+        { "name": "国际化模块", "id": "internationalization_module" },
+        { "name": "本地化服务", "id": "localization_service" },
+        { "name": "时区管理", "id": "timezone_mgmt" }
+      ]
+    },
+     {
+      "path": "base/powermgr",
+      "name_en": "powermgr",
+      "name_ch": "电源管理",
+      "modules": [
+        { "name": "电池管理服务", "id": "battery_mgmt_service" },
+        { "name": "电源策略引擎", "id": "power_policy_engine" },
+        { "name": "低功耗模式管理", "id": "low_power_mode_mgmt" }
+      ]
+    },
+    {
+      "path": "base/usb",
+      "name_en": "usb",
+      "name_ch": "USB管理",
+      "modules": [
+        { "name": "USB驱动框架", "id": "usb_driver_framework" },
+        { "name": "USB设备管理", "id": "usb_device_mgmt" },
+        { "name": "USB协议处理", "id": "usb_protocol_processing" }
+      ]
+    },
+    {
+      "path": "applications",
+      "name_en": "applications",
+      "name_ch": "应用程序",
+      "modules": [
+        { "name": "系统应用", "id": "system_applications" },
+        { "name": "第三方应用管理", "id": "third_party_app_mgmt" },
+        { "name": "应用市场服务", "id": "app_market_service" }
+      ]
+    },
+    {
+      "path": "test/xts",
+      "name_en": "xts",
+      "name_ch": "交叉测试系统",
+      "modules": [
+        { "name": "测试用例管理", "id": "test_case_mgmt" },
+        { "name": "测试执行引擎", "id": "test_execution_engine" },
+        { "name": "测试报告生成", "id": "test_report_generation" }
+      ]
+    },
+    {
+      "path": "test/ostest",
+      "name_en": "ostest",
+      "name_ch": "操作系统测试",
+      "modules": [
+        { "name": "内核测试模块", "id": "kernel_test_module" },
+        { "name": "驱动测试服务", "id": "driver_test_service" },
+        { "name": "系统稳定性测试", "id": "system_stability_test" }
+      ]
+    },
+    {
+      "path": "test/testfwk",
+      "name_en": "testfwk",
+      "name_ch": "测试框架",
+      "modules": [
+        { "name": "单元测试框架", "id": "unit_test_framework" },
+        { "name": "集成测试服务", "id": "integration_test_service" },
+        { "name": "自动化测试引擎", "id": "automated_test_engine" }
+      ]
+    },
+    {
+      "path": "foundation/distributedhardware",
+      "name_en": "distributedhardware",
+      "name_ch": "分布式硬件管理",
+      "modules": [
+        { "name": "硬件虚拟化服务", "id": "hardware_virtualization_service" },
+        { "name": "设备发现与连接", "id": "device_discovery_and_connection" },
+        { "name": "分布式资源调度", "id": "distributed_resource_scheduling" }
+      ]
+    },
+    {
+      "path": "arkcompiler",
+      "name_en": "arkcompiler",
+      "name_ch": "方舟编译器",
+      "modules": [
+        { "name": "前端语法分析", "id": "front_end_syntax_analysis" },
+        { "name": "中间代码生成", "id": "intermediate_code_generation" },
+        { "name": "后端代码优化", "id": "back_end_code_optimization" }
+      ]
+    },
+    {
+      "path": "base/iothardware",
+      "name_en": "iothardware",
+      "name_ch": "物联网硬件管理",
+      "modules": [
+        { "name": "物联网设备驱动", "id": "iot_device_driver" },
+        { "name": "设备通信协议", "id": "device_communication_protocol" },
+        { "name": "设备状态监控", "id": "device_status_monitoring" }
+      ]
+    },
+    {
+      "path": "kernel",
+      "name_en": "kernel",
+      "name_ch": "内核",
+      "modules": [
+        { "name": "内核驱动", "id": "kernel_driver" },
+        { "name": "内存管理", "id": "memory_mgmt" },
+        { "name": "进程管理", "id": "process_mgmt" },
+        { "name": "文件系统", "id": "filesystem" },
+        { "name": "网络协议栈", "id": "network_stack" }
+      ]
+    },
+    {
+      "path": "base/msdp",
+      "name_en": "msdp",
+      "name_ch": "多屏幕显示协议",
+      "modules": [
+        { "name": "协议解析模块", "id": "protocol_parsing_module" },
+        { "name": "屏幕同步服务", "id": "screen_sync_service" },
+        { "name": "显示适配层", "id": "display_adaptation_layer" }
+      ]
+    },
+    {
+      "path": "foundation/deviceprofile",
+      "name_en": "deviceprofile",
+      "name_ch": "设备配置文件管理",
+      "modules": [
+        { "name": "配置文件解析", "id": "profile_parsing" },
+        { "name": "设备信息管理", "id": "device_info_mgmt" },
+        { "name": "配置更新服务", "id": "profile_update_service" }
+      ]
+    },
+    {
+      "path": "foundation/filemanagement",
+      "name_en": "filemanagement",
+      "name_ch": "文件管理",
+      "modules": [
+        { "name": "文件系统服务", "id": "file_system_service" },
+        { "name": "文件权限管理", "id": "file_permission_mgmt" },
+        { "name": "文件备份恢复", "id": "file_backup_restore" }
+      ]
+    },
+    {
+      "path": "foundation/resourceschedule",
+      "name_en": "resourceschedule",
+      "name_ch": "资源调度",
+      "modules": [
+        { "name": "CPU调度器", "id": "cpu_scheduler" },
+        { "name": "内存分配器", "id": "memory_allocator" },
+        { "name": "I/O调度服务", "id": "io_scheduling_service" }
+      ]
+    },
+    {
+      "path": "foundation/barrierfree/accessibility",
+      "name_en": "barrierfree",
+      "name_ch": "无障碍服务",
+      "modules": [
+        { "name": "语音辅助服务", "id": "voice_assist_service" },
+        { "name": "视觉辅助模块", "id": "visual_assist_module" },
+        { "name": "触摸反馈系统", "id": "touch_feedback_system" }
+      ]
+    },
+    {
+      "path": "base/customization",
+      "name_en": "customization",
+      "modules": [
+        { "name": "主题定制服务", "id": "theme_customization_service" },
+        { "name": "壁纸管理模块", "id": "wallpaper_mgmt_module" },
+        { "name": "图标定制引擎", "id": "icon_customization_engine" }
+      ]
+    },
+    {
+      "path": "base/web",
+      "name_en": "web",
+      "modules": [
+        { "name": "网页渲染引擎", "id": "web_rendering_engine" },
+        { "name": "网络请求服务", "id": "web_network_request_service" },
+        { "name": "JavaScript执行环境", "id": "javascript_execution_environment" }
+      ]
+    },
+    {
+      "path": "third_party",
+      "name_en": "thirdparty",
+      "modules": [
+        { "name": "第三方库管理", "id": "third_party_library_mgmt" },
+        { "name": "库兼容性检查", "id": "library_compatibility_check" },
+        { "name": "库更新服务", "id": "library_update_service" }
+      ]
+    },
+    {
+      "path": "ide",
+      "name_en": "ide",
+      "modules": [
+        { "name": "代码编辑器", "id": "code_editor" },
+        { "name": "调试器集成", "id": "debugger_integration" },
+        { "name": "版本控制集成", "id": "version_control_integration" }
+      ]
+    },
+    {
+      "path": "domains/advertising",
+      "name_en": "advertising",
+      "modules": [
+        { "name": "广告投放引擎", "id": "advertising_delivery_engine" },
+        { "name": "广告素材管理", "id": "advertising_material_mgmt" },
+        { "name": "广告效果统计", "id": "advertising_effect_statistics" }
+      ]
+    },
+    {
+      "path": "base/tee",
+      "name_en": "tee",
+      "modules": [
+        { "name": "可信执行环境", "id": "trusted_execution_environment" },
+        { "name": "安全存储服务", "id": "secure_storage_service" },
+        { "name": "安全计算模块", "id": "secure_computation_module" }
+      ]
+    },
+    {
+      "path": "toolchain/llvm-project",
+      "name_en": "llvmproject",
+      "modules": [
+        { "name": "LLVM编译器核心", "id": "llvm_compiler_core" },
+        { "name": "优化器", "id": "optimizer" },
+        { "name": "代码生成器", "id": "code_generator" }
+      ]
+    }
+
+  ]

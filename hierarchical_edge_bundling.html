@@ -21,11 +21,16 @@
             position: relative;
         }
 
+        .controls-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            margin-left: 16px;
+            margin-right: 16px;
+        }
+
         .search-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 100;
             display: flex;
             align-items: center;
         }
@@ -78,11 +83,11 @@
             color: #666;
         }
 
+        .help-container {
+            position: relative;
+        }
+
         .help-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 100;
             background: white;
             border: 2px solid #ACC6FF;
             padding: 10px 20px;
@@ -103,8 +108,8 @@
 
         .help-panel {
             position: absolute;
-            top: 60px;
-            right: 10px;
+            top: 50px;
+            right: 0;
             z-index: 101;
             background: white;
             border: 2px solid #ACC6FF;
@@ -167,7 +172,9 @@
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             border: 2px solid #e9ecef;
-            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .subsystem-arc {
@@ -229,21 +236,17 @@
                 padding: 10px;
             }
             
+            .controls-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            
             #searchInput {
                 width: 200px;
                 font-size: 14px;
-            }
-            
-            .search-container {
-                position: relative;
-                margin-bottom: 20px;
-            }
-            
-            .help-btn {
-                position: relative;
-                top: auto;
-                right: auto;
-                margin-left: 20px;
             }
             
             .help-panel {
@@ -253,54 +256,55 @@
                 width: 100%;
                 margin-top: 10px;
             }
-            
-            #visualization {
-                margin-top: 20px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="搜索模块或子系统...">
-                <button class="clear-btn" onclick="clearSearch()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
+        <div class="controls-container">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索模块或子系统...">
+                    <button class="clear-btn" onclick="clearSearch()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <button class="help-btn" onclick="toggleHelp()">操作说明</button>
-        
-        <div class="help-panel" id="helpPanel">
-            <div class="help-section">
-                <h3>图例说明</h3>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #ACC6FF;"></div>
-                    <span>子系统</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #D7E2FB;"></div>
-                    <span>模块</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #8DB4FF;"></div>
-                    <span>依赖关系</span>
-                </div>
-            </div>
-            
-            <div class="help-section">
-                <h3>操作说明</h3>
-                <div class="help-text">
-                    • 外圈：子系统<br>
-                    • 内圈：模块<br>
-                    • 曲线：依赖关系<br>
-                    • 搜索框：查找并高亮模块<br>
-                    • 鼠标悬停：查看详细信息
+            <div class="help-container">
+                <button class="help-btn" onclick="toggleHelp()">操作说明</button>
+                
+                <div class="help-panel" id="helpPanel">
+                    <div class="help-section">
+                        <h3>图例说明</h3>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ACC6FF;"></div>
+                            <span>子系统</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #D7E2FB;"></div>
+                            <span>模块</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #8DB4FF;"></div>
+                            <span>依赖关系</span>
+                        </div>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h3>操作说明</h3>
+                        <div class="help-text">
+                            • 外圈：子系统<br>
+                            • 内圈：模块<br>
+                            • 曲线：依赖关系<br>
+                            • 搜索框：查找并高亮模块<br>
+                            • 鼠标悬停：查看详细信息<br>
+                            • 单击模块：选中并高亮依赖关系
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -409,43 +413,45 @@
             .attr("class", "tooltip")
             .style("opacity", 0);
 
-        // 计算角度分配，子系统间留间距
+        // 计算角度分配，确保子系统弧形闭合
         let totalModules = 0;
         data.subsystems.forEach(subsystem => {
             totalModules += subsystem.modules.length;
         });
 
-        const subsystemGap = 0.05; // 子系统间隙角度
+        const subsystemGap = (2 * Math.PI) / (data.subsystems.length * 20); // 统一间隙，确保闭合
         const totalGap = subsystemGap * data.subsystems.length;
         const availableAngle = 2 * Math.PI - totalGap;
-        const anglePerModule = availableAngle / totalModules;
 
-        // 为每个模块分配位置
+        // 为每个模块分配位置，确保子系统和模块弧度完全对齐
         const modulePositions = {};
         const subsystemArcs = [];
         let currentAngle = 0;
 
         data.subsystems.forEach((subsystem, subsystemIndex) => {
-            const startAngle = currentAngle;
             const moduleCount = subsystem.modules.length;
-            const moduleGap = 0.01; // 模块间隙角度
-            const subsystemTotalGap = moduleGap * (moduleCount - 1);
-            const subsystemAvailableAngle = moduleCount * anglePerModule - subsystemTotalGap;
-            const anglePerModuleInSubsystem = subsystemAvailableAngle / moduleCount;
+            // 子系统弧度按模块数量比例分配
+            const subsystemAngle = (moduleCount / totalModules) * availableAngle;
+            const startAngle = currentAngle;
+            const endAngle = currentAngle + subsystemAngle;
+            
+            // 模块在子系统内均匀分布，无额外间隙
+            const anglePerModule = subsystemAngle / moduleCount;
             
             subsystem.modules.forEach((module, index) => {
-                const moduleStartInSubsystem = index * (anglePerModuleInSubsystem + moduleGap);
-                const angle = currentAngle + moduleStartInSubsystem + anglePerModuleInSubsystem / 2;
+                const moduleStartAngle = currentAngle + index * anglePerModule;
+                const moduleEndAngle = currentAngle + (index + 1) * anglePerModule;
+                const angle = (moduleStartAngle + moduleEndAngle) / 2;
+                
                 modulePositions[module.id] = {
                     angle: angle,
                     subsystem: subsystem.name,
                     name: module.name,
-                    moduleStartAngle: currentAngle + moduleStartInSubsystem,
-                    moduleEndAngle: currentAngle + moduleStartInSubsystem + anglePerModuleInSubsystem
+                    moduleStartAngle: moduleStartAngle,
+                    moduleEndAngle: moduleEndAngle
                 };
             });
             
-            const endAngle = currentAngle + moduleCount * anglePerModule - subsystemTotalGap;
             subsystemArcs.push({
                 name: subsystem.name,
                 startAngle: startAngle,
@@ -511,8 +517,15 @@
                         .style("top", (event.pageY - 28) + "px");
                 })
                 .on("mouseout", function() {
-                    d3.select(this).attr("fill", "#D7E2FB");
+                    if (!d3.select(this).classed("selected")) {
+                        d3.select(this).attr("fill", "#D7E2FB");
+                    }
                     tooltip.transition().duration(500).style("opacity", 0);
+                })
+                .on("click", function(event) {
+                    event.stopPropagation();
+                    clearHighlight();
+                    selectModule(id);
                 });
         });
 
@@ -580,6 +593,11 @@
             }
         });
 
+        // 全局点击事件，取消选择
+        svg.on("click", function() {
+            clearHighlight();
+        });
+
         // 搜索功能
         const searchInput = document.getElementById('searchInput');
 
@@ -625,6 +643,23 @@
             });
         }
 
+        function selectModule(moduleId) {
+            let highlightedDeps = new Set();
+            highlightModule(moduleId, highlightedDeps);
+            
+            // 添加选中状态
+            d3.select(`#module-${moduleId}`)
+                .classed("selected", true);
+            
+            // 模糊其他依赖关系线
+            d3.selectAll(".dependency-line").each(function() {
+                const id = d3.select(this).attr("id");
+                if (!highlightedDeps.has(id)) {
+                    d3.select(this).classed("dimmed", true);
+                }
+            });
+        }
+
         function highlightModule(moduleId, highlightedDeps) {
             // 高亮模块
             d3.select(`#module-${moduleId}`)
@@ -652,7 +687,8 @@
 
         function clearHighlight() {
             d3.selectAll(".module-arc")
-                .attr("fill", "#D7E2FB");
+                .attr("fill", "#D7E2FB")
+                .classed("selected", false);
             
             d3.selectAll(".module-label")
                 .style("fill", "#5a6c7d")

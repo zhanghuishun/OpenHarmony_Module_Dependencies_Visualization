@@ -125,12 +125,28 @@ function initVisualization() {
                 tooltip.html(`模块: ${pos.name}<br>子系统: ${pos.subsystem}`)
                     .style("left", (event.pageX + 10) + "px")
                     .style("top", (event.pageY - 28) + "px");
+                
+                // 显示模块标签
+                const labelRadius = radius - 60;
+                const x = Math.cos(pos.angle - Math.PI / 2) * labelRadius;
+                const y = Math.sin(pos.angle - Math.PI / 2) * labelRadius;
+                
+                labelsGroup.append("text")
+                    .attr("class", "module-label")
+                    .attr("id", `label-${id}`)
+                    .attr("x", x)
+                    .attr("y", y)
+                    .attr("dy", "0.35em")
+                    .text(pos.name);
             })
             .on("mouseout", function() {
                 if (!d3.select(this).classed("selected")) {
                     d3.select(this).attr("fill", "#D7E2FB");
                 }
                 tooltip.transition().duration(500).style("opacity", 0);
+                
+                // 移除模块标签
+                d3.select(`#label-${id}`).remove();
             })
             .on("click", function(event) {
                 event.stopPropagation();
@@ -157,20 +173,20 @@ function initVisualization() {
             .text(arc.name);
     });
 
-    // 模块标签
-    Object.entries(modulePositions).forEach(([id, pos]) => {
-        const labelRadius = radius - 60;
-        const x = Math.cos(pos.angle - Math.PI / 2) * labelRadius;
-        const y = Math.sin(pos.angle - Math.PI / 2) * labelRadius;
-        
-        labelsGroup.append("text")
-            .attr("class", "module-label")
-            .attr("id", `label-${id}`)
-            .attr("x", x)
-            .attr("y", y)
-            .attr("dy", "0.35em")
-            .text(pos.name);
-    });
+    // 模块标签 - 注释掉默认显示的代码
+    // Object.entries(modulePositions).forEach(([id, pos]) => {
+    //     const labelRadius = radius - 60;
+    //     const x = Math.cos(pos.angle - Math.PI / 2) * labelRadius;
+    //     const y = Math.sin(pos.angle - Math.PI / 2) * labelRadius;
+    //    
+    //     labelsGroup.append("text")
+    //         .attr("class", "module-label")
+    //         .attr("id", `label-${id}`)
+    //         .attr("x", x)
+    //         .attr("y", y)
+    //         .attr("dy", "0.35em")
+    //         .text(pos.name);
+    // });
 
     // 绘制依赖关系线
     const line = d3.radialLine()

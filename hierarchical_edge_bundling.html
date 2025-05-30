@@ -202,7 +202,7 @@
         }
 
         .dimmed {
-            opacity: 0.15;
+            opacity: 0.15 !important;
         }
 
         .subsystem-label, .module-label {
@@ -413,17 +413,18 @@
             .attr("class", "tooltip")
             .style("opacity", 0);
 
-        // 计算角度分配，确保子系统弧形闭合
+        // 计算角度分配 - 优化后的逻辑
         let totalModules = 0;
         data.subsystems.forEach(subsystem => {
             totalModules += subsystem.modules.length;
         });
 
-        const subsystemGap = (2 * Math.PI) / (data.subsystems.length * 20); // 统一间隙，确保闭合
+        // 减小子系统间的间距
+        const subsystemGap = (2 * Math.PI) / (data.subsystems.length * 40); // 从20改为40，间距更小
         const totalGap = subsystemGap * data.subsystems.length;
         const availableAngle = 2 * Math.PI - totalGap;
 
-        // 为每个模块分配位置，确保子系统和模块弧度完全对齐
+        // 为每个模块分配位置，在子系统内均匀分布并添加模块间隙
         const modulePositions = {};
         const subsystemArcs = [];
         let currentAngle = 0;
@@ -435,12 +436,16 @@
             const startAngle = currentAngle;
             const endAngle = currentAngle + subsystemAngle;
             
-            // 模块在子系统内均匀分布，无额外间隙
-            const anglePerModule = subsystemAngle / moduleCount;
+            // 在子系统内为模块间添加小间隙
+            const moduleGapRatio = 0.05; // 10%的空间用于间隙
+            const totalModuleGaps = moduleCount > 1 ? moduleCount - 1 : 0;
+            const moduleGapAngle = subsystemAngle * moduleGapRatio / totalModuleGaps;
+            const availableModuleAngle = subsystemAngle * (1 - moduleGapRatio);
+            const anglePerModule = totalModuleGaps > 0 ? availableModuleAngle / moduleCount : subsystemAngle;
             
             subsystem.modules.forEach((module, index) => {
-                const moduleStartAngle = currentAngle + index * anglePerModule;
-                const moduleEndAngle = currentAngle + (index + 1) * anglePerModule;
+                const moduleStartAngle = currentAngle + index * (anglePerModule + (index > 0 ? moduleGapAngle : 0));
+                const moduleEndAngle = moduleStartAngle + anglePerModule;
                 const angle = (moduleStartAngle + moduleEndAngle) / 2;
                 
                 modulePositions[module.id] = {
@@ -634,7 +639,7 @@
                 });
             }
             
-            // 模糊其他依赖关系线
+            // 大幅降低其他依赖关系线的透明度
             d3.selectAll(".dependency-line").each(function() {
                 const id = d3.select(this).attr("id");
                 if (!highlightedDeps.has(id)) {
@@ -651,7 +656,7 @@
             d3.select(`#module-${moduleId}`)
                 .classed("selected", true);
             
-            // 模糊其他依赖关系线
+            // 大幅降低其他依赖关系线的透明度，使选中的更突出
             d3.selectAll(".dependency-line").each(function() {
                 const id = d3.select(this).attr("id");
                 if (!highlightedDeps.has(id)) {

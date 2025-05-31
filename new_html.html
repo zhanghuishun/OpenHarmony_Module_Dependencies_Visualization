@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenHarmony模块依赖关系可视化</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="visualization">
+            <!-- 搜索组件覆盖层 -->
+            <div class="search-overlay">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索模块或子系统...">
+                    <button class="clear-btn" onclick="clearSearch()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 帮助组件覆盖层 -->
+            <div class="help-overlay">
+                <button class="help-btn" onclick="toggleHelp()">操作说明</button>
+                
+                <div class="help-panel" id="helpPanel">
+                    <div class="help-section">
+                        <h3>图例说明</h3>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ACC6FF;"></div>
+                            <span>子系统</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #D7E2FB;"></div>
+                            <span>模块</span>
+                        </div>
+                    </div>
+                    <div class="help-section">
+                        <h3>操作说明</h3>
+                        <div class="help-text">
+                            • 外圈：子系统<br>
+                            • 内圈：模块<br>
+                            • 曲线：依赖关系<br>
+                            • 搜索框：查找并高亮模块<br>
+                            • 鼠标悬停：查看详细信息<br>
+                            • 单击模块：选中并高亮依赖关系
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

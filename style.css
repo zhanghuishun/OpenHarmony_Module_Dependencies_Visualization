@@ -1,0 +1,288 @@
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+#visualization {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1040px;
+    height: 1040px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* 搜索组件样式 - 作为可视化画布上的覆盖层 */
+.search-overlay {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 100;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#searchInput {
+    padding: 12px 45px 12px 20px;
+    border: 2px solid #ACC6FF;
+    border-radius: 25px;
+    background: white;
+    color: #333;
+    font-size: 16px;
+    width: 300px;
+    box-shadow: 0 4px 15px rgba(172, 198, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+#searchInput::placeholder {
+    color: #999;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #8DB4FF;
+    box-shadow: 0 6px 20px rgba(172, 198, 255, 0.4);
+}
+
+.clear-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #999;
+}
+
+.clear-btn:hover {
+    background: #f0f0f0;
+    color: #666;
+}
+
+/* 帮助组件样式 - 作为可视化画布上的覆盖层 */
+.help-overlay {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+}
+
+.help-btn {
+    background: white;
+    border: 2px solid #ACC6FF;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 4px 15px rgba(172, 198, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.help-btn:hover {
+    background: #ACC6FF;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(172, 198, 255, 0.4);
+}
+
+.help-panel {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    z-index: 101;
+    background: white;
+    border: 2px solid #ACC6FF;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(172, 198, 255, 0.4);
+    width: 280px;
+    display: none;
+}
+
+.help-panel.show {
+    display: block;
+    animation: fadeInDown 0.3s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.help-section {
+    margin-bottom: 15px;
+}
+
+.help-section h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    color: #5a6c7d;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 12px;
+    border-radius: 6px;
+}
+
+.help-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.subsystem-arc {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.module-arc {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dependency-line {
+    fill: none;
+    stroke: #8DB4FF;
+    stroke-width: 1.5;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.highlighted {
+    stroke: #5a6c7d;
+    stroke-width: 2;
+    opacity: 1;
+}
+
+.dimmed {
+    opacity: 0.15 !important;
+}
+
+.subsystem-label, .module-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-anchor: middle;
+    pointer-events: none;
+    fill: #5a6c7d;
+    transition: opacity 0.3s ease;
+}
+
+.module-label {
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0;
+}
+
+.module-label.visible {
+    opacity: 1;
+}
+
+.tooltip {
+    position: absolute;
+    padding: 10px 15px;
+    background: white;
+    color: #333;
+    border-radius: 8px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e9ecef;
+}
+
+@media (max-width: 1200px) {
+    .container {
+        padding: 10px;
+    }
+    
+    #visualization {
+        width: 90vw;
+        height: 90vw;
+        max-width: 800px;
+        max-height: 800px;
+    }
+
+    #searchInput {
+        width: 200px;
+        font-size: 14px;
+    }
+
+    .help-panel {
+        width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    #visualization {
+        width: 95vw;
+        height: 95vw;
+        max-width: 600px;
+        max-height: 600px;
+    }
+
+    #searchInput {
+        width: 180px;
+        font-size: 14px;
+        padding: 10px 40px 10px 16px;
+    }
+
+    .help-panel {
+        width: 220px;
+        padding: 15px;
+    }
+
+    .search-overlay {
+        top: 12px;
+        left: 12px;
+    }
+
+    .help-overlay {
+        top: 12px;
+        right: 12px;
+    }
+}

@@ -1,10 +1,10 @@
-// OpenHarmony 模块数据结构
+// OpenHarmony 模块数据结构 (小型系统)
 const data = {
     subsystems: [
         {
             name: "内核子系统",
             modules: [
-                { name: "内核驱动", id: "kernel_driver" },
+                { name: "LiteOS内核", id: "liteos_kernel" },
                 { name: "内存管理", id: "memory_mgmt" },
                 { name: "进程管理", id: "process_mgmt" },
                 { name: "文件系统", id: "filesystem" },
@@ -12,70 +12,99 @@ const data = {
             ]
         },
         {
-            name: "系统服务",
+            name: "驱动子系统",
             modules: [
-                { name: "窗口管理", id: "window_mgmt" },
-                { name: "输入管理", id: "input_mgmt" },
-                { name: "电源管理", id: "power_mgmt" },
-                { name: "多媒体服务", id: "multimedia" },
-                { name: "通信服务", id: "communication" },
-                { name: "安全服务", id: "security" }
+                { name: "设备驱动框架", id: "driver_framework" },
+                { name: "传感器驱动", id: "sensor_driver" },
+                { name: "显示驱动", id: "display_driver" },
+                { name: "输入设备驱动", id: "input_driver" }
             ]
         },
         {
-            name: "框架层",
+            name: "泛Sensor服务",
             modules: [
-                { name: "ArkUI", id: "arkui" },
-                { name: "ArkTS运行时", id: "arkts" },
-                { name: "分布式数据", id: "distributed_data" },
-                { name: "RPC通信", id: "rpc" },
-                { name: "DFX框架", id: "dfx" },
-                { name: "包管理", id: "bundle_mgmt" }
+                { name: "传感器管理", id: "sensor_mgmt" },
+                { name: "马达控制", id: "vibrator" },
+                { name: "LED控制", id: "led" }
             ]
         },
         {
-            name: "应用层",
+            name: "图形子系统",
             modules: [
-                { name: "桌面", id: "launcher" },
-                { name: "设置", id: "settings" },
-                { name: "相机", id: "camera_app" },
-                { name: "图库", id: "gallery" },
-                { name: "联系人", id: "contacts" }
+                { name: "UI组件", id: "ui_components" },
+                { name: "布局管理", id: "layout_mgmt" },
+                { name: "动画引擎", id: "animation" },
+                { name: "渲染引擎", id: "rendering" }
             ]
         },
         {
-            name: "硬件抽象层",
+            name: "分布式软总线",
             modules: [
-                { name: "显示驱动", id: "display_hal" },
-                { name: "音频驱动", id: "audio_hal" },
-                { name: "传感器驱动", id: "sensor_hal" },
-                { name: "相机驱动", id: "camera_hal" },
-                { name: "USB驱动", id: "usb_hal" }
+                { name: "设备发现", id: "device_discovery" },
+                { name: "设备连接", id: "device_connection" },
+                { name: "数据传输", id: "data_transfer" }
+            ]
+        },
+        {
+            name: "JS UI框架",
+            modules: [
+                { name: "JS组件库", id: "js_components" },
+                { name: "JS运行时", id: "js_runtime" },
+                { name: "UI渲染", id: "ui_rendering" }
+            ]
+        },
+        {
+            name: "媒体子系统",
+            modules: [
+                { name: "音频服务", id: "audio_service" },
+                { name: "视频服务", id: "video_service" },
+                { name: "图像处理", id: "image_processing" }
+            ]
+        },
+        {
+            name: "安全子系统",
+            modules: [
+                { name: "应用权限管理", id: "permission_mgmt" },
+                { name: "设备认证", id: "device_auth" },
+                { name: "密钥管理", id: "key_mgmt" }
             ]
         }
     ]
 };
 
-// 依赖关系定义
+// 依赖关系定义 (按密集程度排列)
 const dependencies = [
-    { source: "arkui", target: "window_mgmt" },
-    { source: "arkui", target: "input_mgmt" },
-    { source: "arkts", target: "memory_mgmt" },
-    { source: "arkts", target: "process_mgmt" },
-    { source: "window_mgmt", target: "display_hal" },
-    { source: "multimedia", target: "audio_hal" },
-    { source: "multimedia", target: "display_hal" },
-    { source: "camera_app", target: "camera_hal" },
-    { source: "camera_app", target: "multimedia" },
-    { source: "launcher", target: "arkui" },
-    { source: "settings", target: "arkui" },
-    { source: "gallery", target: "multimedia" },
-    { source: "contacts", target: "distributed_data" },
-    { source: "distributed_data", target: "communication" },
-    { source: "rpc", target: "network_stack" },
-    { source: "security", target: "kernel_driver" },
-    { source: "power_mgmt", target: "kernel_driver" },
-    { source: "input_mgmt", target: "sensor_hal" },
-    { source: "bundle_mgmt", target: "filesystem" },
-    { source: "dfx", target: "process_mgmt" }
+    // 图形子系统相关依赖
+    { source: "ui_components", target: "layout_mgmt" },
+    { source: "ui_components", target: "animation" },
+    { source: "rendering", target: "display_driver" },
+    { source: "js_components", target: "ui_components" },
+    { source: "js_runtime", target: "memory_mgmt" },
+    { source: "ui_rendering", target: "rendering" },
+    
+    // 驱动与传感器相关依赖
+    { source: "sensor_mgmt", target: "sensor_driver" },
+    { source: "vibrator", target: "driver_framework" },
+    { source: "led", target: "driver_framework" },
+    { source: "input_driver", target: "driver_framework" },
+    
+    // 分布式软总线相关依赖
+    { source: "device_discovery", target: "network_stack" },
+    { source: "device_connection", target: "network_stack" },
+    { source: "data_transfer", target: "filesystem" },
+    
+    // 媒体子系统相关依赖
+    { source: "audio_service", target: "driver_framework" },
+    { source: "video_service", target: "display_driver" },
+    { source: "image_processing", target: "memory_mgmt" },
+    
+    // 安全子系统相关依赖
+    { source: "permission_mgmt", target: "process_mgmt" },
+    { source: "device_auth", target: "network_stack" },
+    { source: "key_mgmt", target: "liteos_kernel" },
+    
+    // 跨子系统依赖
+    { source: "js_runtime", target: "liteos_kernel" },
+    { source: "animation", target: "process_mgmt" },
+    { source: "layout_mgmt", target: "memory_mgmt" }
 ];

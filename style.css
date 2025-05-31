@@ -28,7 +28,47 @@ body {
     position: relative;
 }
 
-/* 搜索组件样式 - 作为可视化画布上的覆盖层 */
+/* Tab切换样式 */
+.tab-overlay {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+.tab-container {
+    display: flex;
+    background: white;
+    border-radius: 25px;
+    border: 2px solid #ACC6FF;
+    box-shadow: 0 4px 15px rgba(172, 198, 255, 0.3);
+    overflow: hidden;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn.active {
+    background: #ACC6FF;
+    color: white;
+    font-weight: 600;
+}
+
+.tab-btn:hover:not(.active) {
+    background: #f0f0f0;
+    color: #333;
+}
+
+/* 搜索组件样式 */
 .search-overlay {
     position: absolute;
     top: 16px;
@@ -84,7 +124,7 @@ body {
     color: #666;
 }
 
-/* 帮助组件样式 - 作为可视化画布上的覆盖层 */
+/* 帮助组件样式 */
 .help-overlay {
     position: absolute;
     top: 16px;

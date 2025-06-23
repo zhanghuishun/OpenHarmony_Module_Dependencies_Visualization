@@ -1,10 +1,29 @@
+/*
+ * "Stardust" Theme for Code Dependency Visualization
+ * Design by Gemini
+ * Version: 1.0
+ *
+ * Principles: Clarity First, Modern & Efficient, Breathability.
+ * Font: Inter (Please ensure this font is imported in your HTML for best results, e.g., via Google Fonts)
+ * Color Palette:
+ * - Base Background: #F5F7FA (Nebula White)
+ * - Primary Accent: #127AE9 (Quantum Blue)
+ * - Text: #1F2937 (Deep Space Black), #6C757D (Neutron Gray)
+ * - Visualization Edges: #DDE1E6 (Orbit Gray)
+*/
+
 body {
     margin: 0;
     padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    /* 字体系统：使用Inter作为首选，提供清晰的UI字体作为备选 */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* 背景色：使用带有细微冷色调的星云白，降低视觉疲劳 */
+    background-color: #F5F7FA;
     min-height: 100vh;
-    color: #333;
+    /* 主要文本颜色：使用深空黑，保证阅读对比度 */
+    color: #1F2937;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -14,11 +33,13 @@ body {
 }
 
 #visualization {
-    background: white;
-    border-radius: 15px;
+    background: #FFFFFF;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    border: 2px solid #e9ecef;
+    /* 阴影：使用更轻量、更微妙的双层阴影来营造层次感 */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 4px 10px rgba(0,0,0,0.03);
+    /* 边框：使用更浅的灰色，使其几乎与背景融为一体 */
+    border: 1px solid #E9ECEF;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,51 +49,11 @@ body {
     position: relative;
 }
 
-/* Tab切换样式 */
-.tab-overlay {
-    position: absolute;
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-}
-
-.tab-container {
-    display: flex;
-    background: white;
-    border-radius: 25px;
-    border: 2px solid #ACC6FF;
-    box-shadow: 0 4px 15px rgba(172, 198, 255, 0.3);
-    overflow: hidden;
-}
-
-.tab-btn {
-    padding: 12px 24px;
-    background: white;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    color: #666;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.tab-btn.active {
-    background: #ACC6FF;
-    color: white;
-    font-weight: 600;
-}
-
-.tab-btn:hover:not(.active) {
-    background: #f0f0f0;
-    color: #333;
-}
-
 /* 搜索组件样式 */
 .search-overlay {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 20px;
+    left: 20px;
     z-index: 100;
 }
 
@@ -83,72 +64,75 @@ body {
 }
 
 #searchInput {
-    padding: 12px 45px 12px 20px;
-    border: 2px solid #ACC6FF;
-    border-radius: 25px;
-    background: white;
-    color: #333;
-    font-size: 16px;
-    width: 300px;
-    box-shadow: 0 4px 15px rgba(172, 198, 255, 0.3);
-    transition: all 0.3s ease;
+    padding: 10px 40px 10px 16px;
+    /* 边框：使用标准的中性灰 */
+    border: 1px solid #CED4DA;
+    border-radius: 8px; /* 使用更现代的小圆角 */
+    background: #FFFFFF;
+    color: #1F2937;
+    font-size: 14px;
+    width: 280px;
+    /* 阴影：添加细微的内阴影和外阴影，增加质感 */
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #searchInput::placeholder {
-    color: #999;
+    color: #868E96; /* 占位符使用中子灰 */
 }
 
+/* 交互状态：使用量子蓝作为高亮色 */
 #searchInput:focus {
     outline: none;
-    border-color: #8DB4FF;
-    box-shadow: 0 6px 20px rgba(172, 198, 255, 0.4);
+    border-color: #127AE9;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
 }
 
 .clear-btn {
     position: absolute;
-    right: 12px;
+    right: 8px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
+    padding: 6px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    color: #999;
+    transition: background-color 0.2s ease;
+    color: #6C757D;
 }
 
 .clear-btn:hover {
-    background: #f0f0f0;
-    color: #666;
+    background-color: #F1F3F5;
 }
 
 /* 帮助组件样式 */
 .help-overlay {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 20px;
+    right: 20px;
     z-index: 100;
 }
 
 .help-btn {
-    background: white;
-    border: 2px solid #ACC6FF;
-    padding: 10px 20px;
-    border-radius: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #CED4DA;
+    padding: 10px 16px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    color: #333;
-    box-shadow: 0 4px 15px rgba(172, 198, 255, 0.3);
-    transition: all 0.3s ease;
+    color: #1F2937;
+    font-weight: 500;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
 }
 
 .help-btn:hover {
-    background: #ACC6FF;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(172, 198, 255, 0.4);
+    background-color: #F8F9FA;
+    border-color: #ADB5BD;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .help-panel {
@@ -156,121 +140,130 @@ body {
     top: 50px;
     right: 0;
     z-index: 101;
-    background: white;
-    border: 2px solid #ACC6FF;
-    border-radius: 15px;
+    background: #FFFFFF;
+    border: 1px solid #E9ECEF;
+    border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 8px 30px rgba(172, 198, 255, 0.4);
+    /* 阴影：参考#visualization的阴影系统 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     width: 280px;
     display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .help-panel.show {
     display: block;
-    animation: fadeInDown 0.3s ease;
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .help-section {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+}
+.help-section:last-child {
+    margin-bottom: 0;
 }
 
 .help-section h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.1em;
-    color: #5a6c7d;
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F2937;
 }
 
 .legend-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 5px 0;
-    font-size: 14px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: #495057;
 }
 
 .legend-color {
-    width: 20px;
-    height: 12px;
-    border-radius: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
 }
 
 .help-text {
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.6;
-    color: #666;
+    color: #495057; /* 使用比辅助文字更深一点的灰色，确保可读性 */
 }
 
-.subsystem-arc {
+/* --- D3 Visualization Styles --- */
+
+/* 弧形：基座样式，注意JS中会覆盖fill属性 */
+.subsystem-arc, .module-arc {
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: fill 0.2s ease, opacity 0.2s ease;
 }
 
-.module-arc {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
+/* 依赖关系线 (核心视觉元素) */
 .dependency-line {
     fill: none;
-    stroke: #8DB4FF;
-    stroke-width: 1.5;
-    opacity: 0.6;
-    transition: all 0.3s ease;
+    /* 默认状态：使用轨迹灰，作为背景，不抢眼 */
+    stroke: #DDE1E6;
+    stroke-width: 1px; /* 默认更细，突出高亮状态 */
+    opacity: 0.7; /* 默认半透明 */
+    transition: all 0.2s ease;
 }
 
+/* 高亮状态：路径变为量子蓝，并加粗 */
 .highlighted {
-    stroke: #5a6c7d;
-    stroke-width: 2;
+    stroke: #127AE9;
+    stroke-width: 2px;
     opacity: 1;
 }
 
+/* 暗淡状态：大幅降低透明度，让高亮路径脱颖而出 */
 .dimmed {
-    opacity: 0.15 !important;
+    opacity: 0.05 !important;
 }
 
+/* 标签样式 */
 .subsystem-label, .module-label {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 500; /* 降低字重，使其更轻量 */
     text-anchor: middle;
     pointer-events: none;
-    fill: #5a6c7d;
-    transition: opacity 0.3s ease;
+    /* 标签颜色：使用中子灰 */
+    fill: #6C757D;
+    transition: opacity 0.2s ease, fill 0.2s ease;
 }
 
+/* 模块标签默认更小更细 */
 .module-label {
     font-size: 10px;
-    font-weight: 500;
-    opacity: 0;
+    font-weight: 400;
+    opacity: 0; /* 默认隐藏 */
 }
 
 .module-label.visible {
     opacity: 1;
 }
 
+/* 提示框样式 */
 .tooltip {
     position: absolute;
-    padding: 10px 15px;
-    background: white;
-    color: #333;
-    border-radius: 8px;
+    padding: 8px 12px;
+    background: #FFFFFF;
+    /* 文本颜色：使用深空黑 */
+    color: #1F2937;
+    border-radius: 6px;
     font-size: 12px;
     pointer-events: none;
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e9ecef;
+    /* 阴影：使用统一的轻量阴影 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #E9ECEF;
+    transition: opacity 0.2s ease;
 }
 
+/* 响应式调整 (保持不变) */
 @media (max-width: 1200px) {
     .container {
         padding: 10px;
@@ -304,25 +297,23 @@ body {
         max-width: 600px;
         max-height: 600px;
     }
+    
+    .search-overlay, .help-overlay {
+        top: 12px;
+    }
+    .search-overlay { left: 12px; }
+    .help-overlay { right: 12px; }
 
     #searchInput {
         width: 180px;
-        font-size: 14px;
-        padding: 10px 40px 10px 16px;
+        font-size: 13px;
+        padding: 8px 35px 8px 14px;
     }
 
     .help-panel {
         width: 220px;
         padding: 15px;
     }
-
-    .search-overlay {
-        top: 12px;
-        left: 12px;
-    }
-
-    .help-overlay {
-        top: 12px;
-        right: 12px;
-    }
 }
+
+/* 移除了旧文件中不再需要的 .tab-* 样式 */
